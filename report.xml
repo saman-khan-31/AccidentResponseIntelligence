@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SASReport xmlns="http://www.sas.com/sasreportmodel/bird-4.59.0" label="DubaiPolice_IOP_Phase1Demo_ver2" features="promptModelV2" implicitInteractions="reportPrompt sectionPrompt sectionLink" createdLocale="en_US" createdVersion="4.59.0" dateCreated="2026-02-17T22:11:13Z" dateModified="2026-04-07T14:43:20Z" createdApplication="SAS Visual Analytics" lastModifiedApplication="SAS Visual Analytics" nextUniqueNameIndex="1001">
+	<DataSources>
+		<DataSource label="P1_CALLS" type="relational" hidden="true" name="ds44">
+			<CasResource server="cas-shared-default" library="Public" table="P1_CALLS" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi45" xref="callerLatitude"/>
+				<DataItem name="bi46" xref="callerLongitude"/>
+				<DataItem name="bi47" xref="callerName"/>
+				<DataItem name="bi48" xref="callerPhone"/>
+				<DataItem name="bi49" xref="callId"/>
+				<DataItem name="bi50" xref="description"/>
+				<DataItem name="bi51" xref="incidentId"/>
+				<DataItem name="bi52" xref="receivedAt"/>
+				<DataItem name="bi53" xref="sentiment"/>
+				<DataItem name="bi54" xref="transcript"/>
+				<DataItem name="bi55" xref="urgency"/>
+			</BusinessItemFolder>
+		</DataSource>
+		<DataSource label="UPDATED_UNITS" type="relational" name="ds484">
+			<CasResource server="cas-shared-default" library="Public" table="UPDATED_UNITS" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi485" xref="callSign"/>
+				<DataItem name="bi486" xref="distance"/>
+				<DataItem name="bi487" xref="eta"/>
+				<DataItem name="bi488" xref="incidentId"/>
+				<DataItem name="bi489" xref="status"/>
+				<DataItem name="bi490" xref="unitId"/>
+				<PredefinedDataItem calculation="totalCount" name="bi491" label="Frequency" usage="quantitative" format="COMMA12."/>
+				<PredefinedDataItem calculation="totalCountPercent" name="bi492" label="Frequency Percent" usage="quantitative" format="PERCENT20.2"/>
+			</BusinessItemFolder>
+		</DataSource>
+		<DataSource label="UPDATED_CALLS" type="relational" name="ds493">
+			<CasResource server="cas-shared-default" library="Public" table="UPDATED_CALLS" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi494" xref="callerLatitude"/>
+				<DataItem name="bi495" xref="callerLongitude"/>
+				<DataItem name="bi496" xref="callerName"/>
+				<DataItem name="bi497" xref="callId"/>
+				<DataItem name="bi498" xref="description"/>
+				<DataItem name="bi499" xref="incidentId"/>
+				<DataItem name="bi500" xref="receivedAt"/>
+				<DataItem name="bi501" xref="sentiment"/>
+				<DataItem name="bi502" xref="urgency"/>
+				<PredefinedDataItem calculation="totalCount" name="bi503" label="Frequency" usage="quantitative" format="COMMA12."/>
+				<PredefinedDataItem calculation="totalCountPercent" name="bi504" label="Frequency Percent" usage="quantitative" format="PERCENT20.2"/>
+			</BusinessItemFolder>
+		</DataSource>
+		<DataSource label="UPDATED_INCIDENTS" type="relational" name="ds505">
+			<CasResource server="cas-shared-default" library="Public" table="UPDATED_INCIDENTS" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi506" label="Creation Time" xref="createdAt"/>
+				<DataItem name="bi507" xref="description"/>
+				<DataItem name="bi508" xref="externalEventId"/>
+				<DataItem name="bi509" label="Incident ID" xref="incidentId"/>
+				<DataItem name="bi510" xref="latitude"/>
+				<DataItem name="bi511" label="Location" xref="locationName"/>
+				<DataItem name="bi512" xref="longitude"/>
+				<DataItem name="bi513" xref="priority"/>
+				<DataItem name="bi514" xref="status"/>
+				<DataItem name="bi515" xref="type"/>
+				<DataItem name="bi516" xref="updatedAt"/>
+				<DataItem name="bi517" label="Response Wave" xref="wave"/>
+				<PredefinedDataItem calculation="totalCount" name="bi518" label="Frequency" usage="quantitative" format="COMMA12."/>
+				<PredefinedDataItem calculation="totalCountPercent" name="bi519" label="Frequency Percent" usage="quantitative" format="PERCENT20.2"/>
+				<CalculatedItem dataType="datetime" name="bi538" label="createdAt DateTime" usage="categorical" format="DATETIME0" aggregation="sum">
+					<Expression>applySASInformat(${bi506,binned},$SASInformat{MDYAMPM40.})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">Parse(createdAt, &apos;MDYAMPM40&apos;)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi541" label="Average Response Time" usage="quantitative" format="COMMA12.2" aggregation="average">
+					<Expression>2.5</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">2.5</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi543" label="High Risk Zones Count" usage="quantitative" format="COMMA12." aggregation="average">
+					<Expression>3</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">3</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi545" label="SLA Compliance %" usage="quantitative" format="PERCENT12." aggregation="average">
+					<Expression>0.87</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">0.87</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi554" label="Resource Utilization %" usage="quantitative" format="PERCENT12." aggregation="average">
+					<Expression>0.55</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">0.55</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="string" name="bi592" label="Status" usage="categorical" format="$." aggregation="sum">
+					<Expression>cond(eq(${bi517,raw},2),&apos;Units Dispatched&apos;,&apos;Units on Scene&apos;)</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">IF &apos;Response Wave&apos;n = 2 RETURN &apos;Units Dispatched&apos; ELSE &apos;Units on Scene&apos;</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<DataItem name="bi594" label="Location Coordinate" xref="latitude" usage="categorical">
+					<GeoInfo geoType="column" coordinateSpace="WGS84">
+						<Lookup property="latitude" ref="bi510"/>
+						<Lookup property="longitude" ref="bi512"/>
+					</GeoInfo>
+				</DataItem>
+				<CalculatedItem dataType="double" name="bi612" label="Accident Hour" usage="categorical" format="COMMA12." aggregation="sum">
+					<Expression>hour(${bi538,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">Hour(&apos;createdAt DateTime&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="date" name="bi613" label="Accident Date" usage="categorical" format="DATE9" aggregation="sum">
+					<Expression>datepart(${bi538,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">DatePart(&apos;createdAt DateTime&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi614" label="Accident Day" usage="quantitative" format="COMMA12." aggregation="sum">
+					<Expression>dow(${bi613,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">DayOfWeek(&apos;Accident Date&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi615" label="Accident Month" usage="quantitative" format="COMMA12." aggregation="sum">
+					<Expression>month(${bi613,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">Month(&apos;Accident Date&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<GroupedItem grouping="gr617" dataType="string" label="Accident Day (Cat)" name="bi618">
+					<GroupingParameters>
+						<GroupingParameter parameter="bi614" variable="var616"/>
+					</GroupingParameters>
+				</GroupedItem>
+				<CalculatedItem dataType="date" name="bi619" label="Accident MonthYear" usage="categorical" format="MONYY7" aggregation="sum">
+					<Expression>datepart(${bi538,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">DatePart(&apos;createdAt DateTime&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi629" label="No. of Accidents" usage="quantitative" format="COMMA12." aggregation="average">
+					<Expression>hour(${bi538,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">Hour(&apos;createdAt DateTime&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="date" name="bi663" label="Accident Day (Converted)" usage="categorical" format="DOWNAME11" aggregation="sum">
+					<Expression>datepart(${bi538,binned})</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">DatePart(&apos;createdAt DateTime&apos;n)</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi676" label="No. of Accidents Hourly" usage="quantitative" format="F2." aggregation="average">
+					<Expression>div(hour(${bi538,binned}),3)</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">Hour(&apos;createdAt DateTime&apos;n) /3</Property>
+					</EditorProperties>
+				</CalculatedItem>
+				<CalculatedItem dataType="double" name="bi679" label="No. of Accidents Daily" usage="quantitative" format="F2." aggregation="average">
+					<Expression>times(dow(${bi613,binned}),3)</Expression>
+					<EditorProperties>
+						<Property key="USER_EDIT_REPRESENTATION">DayOfWeek(&apos;Accident Date&apos;n) *3
+</Property>
+					</EditorProperties>
+				</CalculatedItem>
+			</BusinessItemFolder>
+		</DataSource>
+		<DataSource label="UPDATED_TIMELINE" type="relational" name="ds520">
+			<CasResource server="cas-shared-default" library="Public" table="UPDATED_TIMELINE" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi521" xref="event"/>
+				<DataItem name="bi522" xref="incidentId"/>
+				<DataItem name="bi523" xref="seq"/>
+				<DataItem name="bi524" xref="system"/>
+				<DataItem name="bi525" xref="timestamp"/>
+				<PredefinedDataItem calculation="totalCount" name="bi526" label="Frequency" usage="quantitative" format="COMMA12."/>
+				<PredefinedDataItem calculation="totalCountPercent" name="bi527" label="Frequency Percent" usage="quantitative" format="PERCENT20.2"/>
+			</BusinessItemFolder>
+		</DataSource>
+		<DataSource label="TIMELINE_ALLEVENTS" type="relational" name="ds693">
+			<CasResource server="cas-shared-default" library="Public" table="TIMELINE_ALLEVENTS" locale="en_US"/>
+			<BusinessItemFolder>
+				<DataItem name="bi694" xref="cumulative_time_sec"/>
+				<DataItem name="bi695" label="Duration (Seconds)" xref="duration_from_prev_sec" aggregation="average"/>
+				<DataItem name="bi696" xref="event"/>
+				<DataItem name="bi697" xref="incidentId"/>
+				<DataItem name="bi698" xref="seq" usage="quantitative"/>
+				<DataItem name="bi699" xref="system"/>
+				<DataItem name="bi700" xref="timestamp"/>
+				<PredefinedDataItem calculation="totalCount" name="bi701" label="Frequency" usage="quantitative" format="COMMA12."/>
+				<PredefinedDataItem calculation="totalCountPercent" name="bi702" label="Frequency Percent" usage="quantitative" format="PERCENT20.2"/>
+			</BusinessItemFolder>
+		</DataSource>
+	</DataSources>
+	<VisualElements>
+		<VisualContainer containerType="precision" name="ve12" label="Precision container 1" selectionDisabled="true">
+			<EditorProperties>
+				<Property key="isPrecision">true</Property>
+				<Property key="isAutoLabel">true</Property>
+			</EditorProperties>
+		</VisualContainer>
+		<VisualContainer containerType="precision" name="ve14" label="Precision container 1 (1)" selectionDisabled="true">
+			<EditorProperties>
+				<Property key="isPrecision">true</Property>
+				<Property key="isAutoLabel">true</Property>
+			</EditorProperties>
+		</VisualContainer>
+		<VisualContainer containerType="precision" name="ve21" label="Precision container 1 (1) (1) (1)" selectionDisabled="true">
+			<EditorProperties>
+				<Property key="isPrecision">true</Property>
+				<Property key="isAutoLabel">true</Property>
+			</EditorProperties>
+		</VisualContainer>
+		<WebContent url="https://saman-khan-31.github.io/Phase1_3/" name="ve845" label="Web content 1" selectionDisabled="true"/>
+		<VisualContainer containerType="precision" name="ve862" label="Precision container 1 (1) (1) (1) (2)" selectionDisabled="true">
+			<EditorProperties>
+				<Property key="isPrecision">true</Property>
+				<Property key="isAutoLabel">true</Property>
+			</EditorProperties>
+		</VisualContainer>
+		<WebContent url="https://saman-khan-31.github.io/Phase1_4/" name="ve853" label="Web content 1 (1)" selectionDisabled="true"/>
+		<VisualContainer containerType="precision" name="ve879" label="Precision container 1 (1) (1) (1) (2) (1)" selectionDisabled="true">
+			<EditorProperties>
+				<Property key="isPrecision">true</Property>
+				<Property key="isAutoLabel">true</Property>
+			</EditorProperties>
+		</VisualContainer>
+		<WebContent url="https://saman-khan-31.github.io/Phase1_2/" name="ve870" label="Web content 1 (1) (1)" selectionDisabled="true"/>
+		<WebContent url="https://saman-khan-31.github.io/Phase1_1/" name="ve983" label="Web content 2" selectionDisabled="true"/>
+		<Image scaleType="scaleToFit" file="ve987.jpg" name="ve987" label="Image 3" selectionDisabled="true"/>
+		<Text name="ve989" label="Text 1" selectionDisabled="true" applyDynamicBrushes="no">
+			<P><Span class="span1">Dubai Police IOP</Span><Span class="span2"> </Span></P>
+			<P><Span class="span3">AI &amp; Analytics Dashboard</Span></P>
+		</Text>
+		<Text name="ve999" label="Text 1 (1)" selectionDisabled="true" applyDynamicBrushes="no">
+			<P class="paragraph1"><Span class="span1">Powered by integrated data from UMIP, SECC, IMS, CAD, ICMS, and VMS, this dashboard delivers an enriched view on the operations. </Span></P>
+			<P class="paragraph2"></P>
+			<P class="paragraph3"><Span class="span2">By consolidating call details, incident logs, dispatch units, case creation, sensor inputs, and live video feeds, this dashboard provides a single, authoritative view of every incident.</Span></P>
+		</Text>
+	</VisualElements>
+	<View>
+		<Header>
+			<MediaContainer target="mt2">
+				<ResponsiveLayout orientation="horizontal" overflow="fit">
+					<Weights mediaTarget="mt5" unit="percent">
+						<Weight value="100%"/>
+					</Weights>
+					<Weights mediaTarget="mt4" unit="percent">
+						<Weight value="100%"/>
+					</Weights>
+					<Weights mediaTarget="mt3" unit="percent">
+						<Weight value="100%"/>
+					</Weights>
+				</ResponsiveLayout>
+			</MediaContainer>
+		</Header>
+		<Section name="vi6" label="Landing Page">
+			<Header>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="horizontal" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+				</MediaContainer>
+			</Header>
+			<Body>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="vertical" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+					<Container ref="ve12" name="vi11">
+						<ResponsiveConstraint>
+							<WidthConstraint>
+								<Width mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</WidthConstraint>
+							<HeightConstraint>
+								<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</HeightConstraint>
+						</ResponsiveConstraint>
+						<ResponsiveLayout orientation="vertical" overflow="fit">
+							<Weights mediaTarget="mt5" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt4" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt3" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+						</ResponsiveLayout>
+						<Visual ref="ve987" name="vi986">
+							<ResponsiveConstraint zIndex="2">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="honor" value="100%" flexibility="shrinkable"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="honor" value="100%" flexibility="shrinkable"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi11" offset="0%"/>
+								<HorizontalConstraint anchor="vi11" offset="0%"/>
+							</ResponsiveConstraint>
+						</Visual>
+						<Visual ref="ve989" name="vi988">
+							<ResponsiveConstraint zIndex="3">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="40%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="fixed"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi11" offset="30%"/>
+								<HorizontalConstraint anchor="vi11" offset="50%"/>
+							</ResponsiveConstraint>
+						</Visual>
+						<Visual ref="ve999" name="vi1000">
+							<ResponsiveConstraint zIndex="4">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="40%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="honor" value="45.01%" flexibility="fixed"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi11" offset="45%"/>
+								<HorizontalConstraint anchor="vi11" offset="50%"/>
+							</ResponsiveConstraint>
+						</Visual>
+					</Container>
+				</MediaContainer>
+			</Body>
+		</Section>
+		<Section name="vi16" label="Unified Intelligence">
+			<Header>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="horizontal" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+				</MediaContainer>
+			</Header>
+			<Body>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="vertical" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+					<Container ref="ve14" name="vi15">
+						<ResponsiveConstraint>
+							<WidthConstraint>
+								<Width mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</WidthConstraint>
+							<HeightConstraint>
+								<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</HeightConstraint>
+						</ResponsiveConstraint>
+						<ResponsiveLayout orientation="vertical" overflow="fit">
+							<Weights mediaTarget="mt5" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt4" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt3" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+						</ResponsiveLayout>
+						<Visual ref="ve983" name="vi982">
+							<ResponsiveConstraint zIndex="1">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi15" offset="0%"/>
+								<HorizontalConstraint anchor="vi15" offset="0%"/>
+							</ResponsiveConstraint>
+						</Visual>
+					</Container>
+				</MediaContainer>
+			</Body>
+		</Section>
+		<Section name="vi881" label="Accident Review">
+			<Header>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="horizontal" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+				</MediaContainer>
+			</Header>
+			<Body>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="vertical" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+					<Container ref="ve879" name="vi880">
+						<ResponsiveConstraint>
+							<WidthConstraint>
+								<Width mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</WidthConstraint>
+							<HeightConstraint>
+								<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</HeightConstraint>
+						</ResponsiveConstraint>
+						<ResponsiveLayout orientation="vertical" overflow="fit">
+							<Weights mediaTarget="mt5" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt4" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt3" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+						</ResponsiveLayout>
+						<Visual ref="ve870" name="vi871">
+							<ResponsiveConstraint zIndex="2">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi880" offset="0%"/>
+								<HorizontalConstraint anchor="vi880" offset="0%"/>
+							</ResponsiveConstraint>
+						</Visual>
+					</Container>
+				</MediaContainer>
+			</Body>
+		</Section>
+		<Section name="vi23" label="Predictive Intelligence">
+			<Header>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="horizontal" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+				</MediaContainer>
+			</Header>
+			<Body>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="vertical" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+					<Container ref="ve21" name="vi22">
+						<ResponsiveConstraint>
+							<WidthConstraint>
+								<Width mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</WidthConstraint>
+							<HeightConstraint>
+								<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</HeightConstraint>
+						</ResponsiveConstraint>
+						<ResponsiveLayout orientation="vertical" overflow="fit">
+							<Weights mediaTarget="mt5" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt4" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt3" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+						</ResponsiveLayout>
+						<Visual ref="ve845" name="vi844">
+							<ResponsiveConstraint zIndex="2">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi22" offset="0%"/>
+								<HorizontalConstraint anchor="vi22" offset="0%"/>
+							</ResponsiveConstraint>
+						</Visual>
+					</Container>
+				</MediaContainer>
+			</Body>
+		</Section>
+		<Section name="vi864" label="Response Optimization">
+			<Header>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="horizontal" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+				</MediaContainer>
+			</Header>
+			<Body>
+				<MediaContainer target="mt2">
+					<ResponsiveLayout orientation="vertical" overflow="fit">
+						<Weights mediaTarget="mt5" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt4" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+						<Weights mediaTarget="mt3" unit="percent">
+							<Weight value="100%"/>
+						</Weights>
+					</ResponsiveLayout>
+					<Container ref="ve862" name="vi863">
+						<ResponsiveConstraint>
+							<WidthConstraint>
+								<Width mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</WidthConstraint>
+							<HeightConstraint>
+								<Height mediaTarget="mt3" preferredSizeBehavior="honor" flexibility="shrinkable"/>
+							</HeightConstraint>
+						</ResponsiveConstraint>
+						<ResponsiveLayout orientation="vertical" overflow="fit">
+							<Weights mediaTarget="mt5" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt4" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+							<Weights mediaTarget="mt3" unit="percent">
+								<Weight value="100%"/>
+							</Weights>
+						</ResponsiveLayout>
+						<Visual ref="ve853" name="vi854">
+							<ResponsiveConstraint zIndex="2">
+								<WidthConstraint>
+									<Width mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</WidthConstraint>
+								<HeightConstraint>
+									<Height mediaTarget="mt3" preferredSizeBehavior="ignore" value="100%" flexibility="flexible"/>
+								</HeightConstraint>
+								<VerticalConstraint anchor="vi863" offset="0%"/>
+								<HorizontalConstraint anchor="vi863" offset="0%"/>
+							</ResponsiveConstraint>
+						</Visual>
+					</Container>
+				</MediaContainer>
+			</Body>
+		</Section>
+	</View>
+	<MediaSchemes>
+		<MediaScheme name="ms1">
+			<BaseStylesheetResource file="basems1.css" theme="light2025"/>
+			<StylesheetFile file="ms1.css"/>
+		</MediaScheme>
+	</MediaSchemes>
+	<MediaTargets>
+		<MediaTarget windowSize="default" scheme="ms1" name="mt2"/>
+		<MediaTarget windowSize="small" scheme="ms1" name="mt3"/>
+		<MediaTarget windowSize="medium" scheme="ms1" name="mt4"/>
+		<MediaTarget windowSize="large" scheme="ms1" name="mt5"/>
+	</MediaTargets>
+	<Properties>
+		<Property key="displayDataSource">ds505</Property>
+		<Property key="ReportPackagesServiceVersion">Viya4 2025.12</Property>
+	</Properties>
+	<Groupings>
+		<Grouping outputType="string" name="gr617">
+			<GroupingVariables>
+				<GroupingVariable variable="var616" type="double"/>
+			</GroupingVariables>
+			<Group>
+				<ValueExpression>&apos;Sunday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},1)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Monday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},2)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Tuesday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},3)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Wednesday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},4)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Thursday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},5)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Friday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},6)</TestExpression>
+			</Group>
+			<Group>
+				<ValueExpression>&apos;Saturday&apos;</ValueExpression>
+				<TestExpression>in(${var616,binned},7)</TestExpression>
+			</Group>
+			<Other>
+				<ValueExpression>&apos; &apos;</ValueExpression>
+			</Other>
+		</Grouping>
+	</Groupings>
+	<ExportProperties>
+		<Export destination="pdf">
+			<Property key="showCoverPage" value="true"></Property>
+			<Property key="showPageNumbers" value="true"></Property>
+		</Export>
+	</ExportProperties>
+	<History>
+	<Versions>
+		<Version key="4.59.0" lastDate="2026-02-17T00:00:00Z"/>
+	</Versions>
+	<Editors>
+		<Editor applicationName="VA">
+			<Revision editorVersion="2020" lastDate="2026-03-31T08:12:35.391Z"/>
+			<Revision editorVersion="2025.12" lastDate="2026-04-07T14:43:20.439Z"/>
+		</Editor>
+	</Editors>
+</History>
+	<SASReportState date="2026-03-31T08:55:13Z">
+		<View/>
+	</SASReportState>
+</SASReport>
